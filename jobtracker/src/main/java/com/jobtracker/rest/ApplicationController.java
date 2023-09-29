@@ -14,7 +14,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
+import static com.jobtracker.utils.Constants.APPLIED;
+import static com.jobtracker.utils.Constants.REFERRED;
+import static com.jobtracker.utils.Constants.REFERRAL_REQUESTED;
+import static com.jobtracker.utils.Constants.COLD;
 @RestController
 @RequestMapping("/api")
 @Validated
@@ -41,25 +44,22 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping ("/application")
-    public List<Application> getAllApplications(){
-        return  applicationService.getAllApplications();
-    }
-    @GetMapping("/")
-    public ResponseEntity<List<Application>> getApplications(@RequestParam("query") final String query) {
-        List<Application> applications;
-        if ("applied".equals(query)) {
+    @GetMapping("/application")
+    public ResponseEntity<SuccessResponse<List<Application>>> getApplications(@RequestParam(name = "query", required = false) final String query) {
+        List<Application> applications = applicationService.getAllApplications();
+        if (APPLIED.equals(query)) {
             applications = applicationService.getAllAppliedApplications();
-        } else if ("referralRequested".equals(query)) {
+        } else if (REFERRAL_REQUESTED.equals(query)) {
             applications = applicationService.getAllReferralRequestedApplications();
-        }else if ("referred".equals(query)) {
+        }else if (REFERRED.equals(query)) {
             applications = applicationService.getAllReferredApplications();
-        }else if ("cold".equals(query)) {
+        }else if (COLD.equals(query)) {
             applications = applicationService.getAllColdApplications();
-        } else {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-        return ResponseEntity.ok(applications);
+        if(applications.isEmpty()){
+            throw new RuntimeException("No data present");
+        }
+        return controllerHelper.buildSuccessResponse(applications);
     }
 
     @PutMapping("/application/{id}/{status}")
