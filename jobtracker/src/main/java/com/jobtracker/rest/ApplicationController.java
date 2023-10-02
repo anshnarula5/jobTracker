@@ -14,13 +14,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import static com.jobtracker.utils.Constants.APPLIED;
-import static com.jobtracker.utils.Constants.REFERRED;
-import static com.jobtracker.utils.Constants.REFERRAL_REQUESTED;
-import static com.jobtracker.utils.Constants.COLD;
+
+import static com.jobtracker.utils.Constants.*;
+
 @RestController
 @RequestMapping("/api")
 @Validated
+@CrossOrigin
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final ControllerHelper controllerHelper;
@@ -46,6 +46,7 @@ public class ApplicationController {
 
     @GetMapping("/application")
     public ResponseEntity<SuccessResponse<List<Application>>> getApplications(@RequestParam(name = "query", required = false) final String query) {
+        System.out.println("Fetching applications");
         List<Application> applications = applicationService.getAllApplications();
         if (APPLIED.equals(query)) {
             applications = applicationService.getAllAppliedApplications();
@@ -55,6 +56,9 @@ public class ApplicationController {
             applications = applicationService.getAllReferredApplications();
         }else if (COLD.equals(query)) {
             applications = applicationService.getAllColdApplications();
+        }
+        else if (INTERVIEW.equals(query)) {
+            applications = new ArrayList<>();
         }
         if(applications.isEmpty()){
             throw new RuntimeException("No data present");

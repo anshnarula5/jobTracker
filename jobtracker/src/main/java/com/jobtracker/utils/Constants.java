@@ -5,5 +5,6 @@ public class Constants {
     public static final String REFERRED = "referred";
     public static final String REFERRAL_REQUESTED = "referralRequested";
     public static final String COLD = "cold";
+    public static final String INTERVIEW = "interview";
 
 }
