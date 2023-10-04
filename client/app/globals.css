@@ -6,8 +6,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Manrope", sans-serif;
+  font-family: 'Montserrat', sans-serif;
+
 }
+/* body{
+  background-image: url("https://img.freepik.com/free-vector/dark-blue-gradient-background_78370-2078.jpg?w=1480&t=st=1696273550~exp=1696274150~hmac=0a96e3274f06556906039ce92daf34cf688af40ee1de0444ac72595c9d2bc96a");
+   height: 100%;
+
+  /* Center and scale the image nicely */
+  /* background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */ */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

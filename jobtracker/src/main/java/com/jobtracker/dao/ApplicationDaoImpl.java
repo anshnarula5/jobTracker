@@ -40,19 +40,19 @@ public class ApplicationDaoImpl implements ApplicationDao{
 
     @Override
     public List<Application> getAllReferralRequestedApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referralRequested = true", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referralRequested = true ORDER BY referralRequestDate DESC", Application.class);
         return query.getResultList();
     }
 
     @Override
     public List<Application> getAllReferredApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referred = true", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referred = true ORDER BY referredDate DESC", Application.class);
         return query.getResultList();
     }
 
     @Override
     public List<Application> getAllAppliedApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE applied = true", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE applied = true ORDER BY appliedDate DESC", Application.class);
         return query.getResultList();
     }
 

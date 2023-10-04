@@ -18,9 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* <Topbar /> */}
-      {/* <Sidebar /> */}
-      <body className={inter.className}>{children}</body>
+      <body className="bg-purple-700">
+        <div className='flex min-h-screen'>
+          <Sidebar />
+          <div className='flex-1 bg-pink-600'>
+            {children}
+          </div>
+        </div>
+      </body>
     </html>
   )
 }

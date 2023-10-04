@@ -23,14 +23,17 @@ const StatusCard = ({ statusName } :any) => {
   }
   useEffect(() => {
     setData();
+    if(statusCode === 200){
+      setIsFormOpen(false)
+    }
   }, [statusCode])
   return (
-    <div className='bg-yellow-100 flex-1 rounded-md flex flex-col '>
+    <div className=' bg-slate-300 rounded-lg bg-opacity-40 flex-1 flex flex-col pb-3'>
       <div className='flex justify-between p-2 px-4 items-center '>
-        <h1 className='block font-sans text-3xl font-semibold leading-snug tracking-normal text-inherit antialiased'>{statusName} {statusCode}</h1>
+        <h1 className='block font-sans text-3xl font-semibold leading-snug tracking-normal text-inherit antialiased'>{statusName}</h1>
         <NewApplicationButton handleClick = {setIsFormOpen}  />
       </div>
-      <div className=''>
+      <div >
         <NewApplicationForm isFormOpen = {isFormOpen} status = {status} setStatusCode = {setStatusCode} />
         {applications && applications.length > 0 && applications.map((application :any) => (
           <Ticket application = {application} key = {application.id} status = {status} />
