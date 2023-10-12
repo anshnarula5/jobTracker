@@ -30,13 +30,18 @@ public class ApplicationService {
     public Application createNewApplication(final Application application){
         final Date date = new Date();
         System.out.println("Inside service, creating new application on date : " + date);
+        application.currentStatusDate = date;
+        application.currentStatus = "interested";
         if(application.referralRequested) {
             application.referralRequestDate = date;
+            application.currentStatus = "referral_requested";
         }else if(application.referred){
             application.referredDate = date;
+            application.currentStatus = "referred";
         }
         else if(application.applied){
             application.appliedDate = date;
+            application.currentStatus = "applied";
         }
         Application response =  applicationDao.save(application);
         System.out.println("Application created  - success - service : "+ response.getId());
@@ -44,7 +49,6 @@ public class ApplicationService {
     }
 
     public List<Application> getAllApplications(){
-
         return applicationDao.getAllApplications();
     }
     public List<List<Application>> getAllApplicationsForDashboard(){
@@ -83,7 +87,7 @@ public class ApplicationService {
         }
         Date date = new Date();
         switch (status){
-            case "referral_requested":
+            case "referralRequested":
                 System.out.println("Inside service, marking referral requested for id" + id + "on date" + date);
                 applicationDao.markReferralRequested(id, date);
                 break;
@@ -100,6 +104,4 @@ public class ApplicationService {
         }
         System.out.println("Signing off - service");
     }
-
-
 }

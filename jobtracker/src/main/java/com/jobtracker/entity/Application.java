@@ -57,4 +57,10 @@ public class Application {
 
     @Column(name = "applied_date")
     public  Date appliedDate;
+
+    @Column(name = "current_status")
+    public String currentStatus;
+
+    @Column(name = "current_status_date")
+    public Date currentStatusDate;
 }

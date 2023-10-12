@@ -1,6 +1,7 @@
 package com.jobtracker.dao;
 
 import com.jobtracker.entity.Application;
+import com.jobtracker.entity.ReferralDataResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -40,19 +41,19 @@ public class ApplicationDaoImpl implements ApplicationDao{
 
     @Override
     public List<Application> getAllReferralRequestedApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referralRequested = true ORDER BY referralRequestDate DESC", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE currentStatus = 'referral_requested' ORDER BY currentStatusDate DESC", Application.class);
         return query.getResultList();
     }
 
     @Override
     public List<Application> getAllReferredApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referred = true ORDER BY referredDate DESC", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE currentStatus = 'referred' ORDER BY currentStatusDate DESC", Application.class);
         return query.getResultList();
     }
 
     @Override
     public List<Application> getAllAppliedApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE applied = true ORDER BY appliedDate DESC", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE currentStatus = 'applied' ORDER BY currentStatusDate DESC", Application.class);
         return query.getResultList();
     }
 
@@ -66,7 +67,8 @@ public class ApplicationDaoImpl implements ApplicationDao{
         System.out.println("Inside Dao call");
         Query query =
                 entityManager
-                        .createQuery("UPDATE Application set referralRequested = true, referralRequestDate = :date where id = :id");
+                        .createQuery("UPDATE Application set referralRequested = true, referralRequestDate = :date, " +
+                                "currentStatus = 'referral_requested', currentStatusDate = :date where id = :id");
         int updateCount = query.setParameter("id", id).setParameter("date", date).executeUpdate();
         System.out.println("Dao call complete with update count : " + updateCount);
     }
@@ -75,7 +77,8 @@ public class ApplicationDaoImpl implements ApplicationDao{
         System.out.println("Inside Dao call");
         Query query =
                 entityManager
-                        .createQuery("UPDATE Application set referred = true, referredDate = :date where id = :id");
+                        .createQuery("UPDATE Application set referred = true, referredDate = :date, " +
+                                "currentStatus = 'referred', currentStatusDate = :date WHERE id = :id");
         int updateCount = query.setParameter("id", id).setParameter("date", date).executeUpdate();
         System.out.println("Dao call complete with update count : " + updateCount);
     }
@@ -84,7 +87,8 @@ public class ApplicationDaoImpl implements ApplicationDao{
         System.out.println("Inside Dao call");
         Query query =
                 entityManager
-                        .createQuery("UPDATE Application set applied = true, appliedDate = :date where id = :id");
+                        .createQuery("UPDATE Application set applied = true, appliedDate = :date, " +
+                                "currentStatus = 'applied', currentStatusDate = :date WHERE id = :id");
         int updateCount = query.setParameter("id", id).setParameter("date", date).executeUpdate();
         System.out.println("Dao call complete with update count : " + updateCount);
     }
@@ -98,5 +102,17 @@ public class ApplicationDaoImpl implements ApplicationDao{
     @Override
     public Application getApplicationById(int id) {
         return null;
+    }
+
+    @Override
+    public ReferralDataResponse getReferralData() {
+        String jpql = "SELECT NEW com.example.ReferralDataResponse(e.companyName, " +
+                "SUM(CASE WHEN e.referralRequested = true THEN 1 ELSE 0 END), " +
+                "SUM(CASE WHEN e.referred = true THEN 1 ELSE 0 END)) " +
+                "FROM ApplicationEntity e " +
+                "GROUP BY e.companyName";
+
+        Query query = entityManager.createQuery(jpql);
+        return (ReferralDataResponse) query.getSingleResult();
     }
 }

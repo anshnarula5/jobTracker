@@ -1,6 +1,7 @@
 package com.jobtracker.dao;
 
 import com.jobtracker.entity.Application;
+import com.jobtracker.entity.ReferralDataResponse;
 
 import javax.xml.crypto.Data;
 import java.util.Date;
@@ -19,4 +20,6 @@ public interface ApplicationDao {
     void markApplied(int id, Date date);
     Boolean idExists(int id);
     Application getApplicationById(int id);
+    ReferralDataResponse getReferralData();
+
 }

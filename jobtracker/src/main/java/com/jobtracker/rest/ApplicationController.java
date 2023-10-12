@@ -67,8 +67,8 @@ public class ApplicationController {
     }
 
     @PutMapping("/application/{id}/{status}")
-    public void markReferralRequested(@PathVariable int id, @PathVariable String status){
-        System.out.println(status);
+    public void updateStatus(@PathVariable int id, @PathVariable String status){
+        System.out.println("Starting update for id : "+ id + " Status : " +  status);
         try {
             applicationService.updateApplicationStatus(id, status);
         } catch (Exception e){
