@@ -5,9 +5,6 @@ const URI = "http://localhost:8080/api/application"
 export const getAllApplications = async (query: string) => {
   const response = await fetch(URI + "?query=" + query, {
     method: "GET",
-    next: {
-      revalidate: 1000
-    }
   })
   const { data } = await response.json()
   return data
@@ -17,7 +14,6 @@ export const addNewApplication = async (formData: Application) => {
   const response = await fetch(URI, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +38,5 @@ export const updateApplicationStatus = async(id : number, newStatus : string) =>
     redirect: "follow", 
     referrerPolicy: "no-referrer",
   })
-  const data = await response.json()
-  return data
 
 }

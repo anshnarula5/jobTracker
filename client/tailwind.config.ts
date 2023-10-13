@@ -17,6 +17,10 @@ const config: Config = {
         '1/9': '13.5%',
       }
     },
+    // colors: {
+    //   "mainBackgroundColor": '#0D1117',
+    //   "columnBackgroundColor": '#161C22'
+    // }
   },
   plugins: [],
 }

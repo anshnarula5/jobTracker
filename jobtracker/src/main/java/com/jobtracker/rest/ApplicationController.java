@@ -65,7 +65,10 @@ public class ApplicationController {
         }
         return controllerHelper.buildSuccessResponse(applications);
     }
-
+//    @GetMapping("/application")
+//    public ResponseEntity<SuccessResponse<Application>> getApplicationById(int id){
+//
+//    }
     @PutMapping("/application/{id}/{status}")
     public void updateStatus(@PathVariable int id, @PathVariable String status){
         System.out.println("Starting update for id : "+ id + " Status : " +  status);

@@ -6,7 +6,7 @@ import { getAllApplications } from './rest/apiService'
 export default function Home() {
 
   return (
-    <main className="font-mono">
+    <main className="font-mono text-gray-50 ">
      This is my HomePage
     </main>
   )

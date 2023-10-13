@@ -9,4 +9,6 @@ export interface Application {
     referralRequestDate?: Date;
     referredDate?: Date;
     appliedDate?: Date;
+    currentStatus? : any;
+    currentStatusDate : Date
   }

@@ -1,9 +1,10 @@
 import React, {useState}from 'react'
 import { convertDate } from '../utils'
 import { addNewApplication } from '../rest/apiService'
+import SubmitButton from './buttons/SubmitButton'
 
 const NewApplicationForm = ({ isFormOpen, status, setStatusCode}: any) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     companyName : "",
     jobId : "",
     jobLink : "",
@@ -27,43 +28,40 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode}: any) => {
   const mountedStyle = { animation: "inAnimation 190ms ease-in" };
   return (
     isFormOpen &&
-    
-    <div className='bg-red-100 p-5 my-2 mx-4 antialiased rounded-xl'>
+    <div className='bg-slate-900 p-5 my-2 antialiased rounded-xl text-neutral-300 text-lg '>
       <div className=" max-w-md">
         <div className="flex flex-col gap-8">
           <label className="block">
-            <span className="text-gray-700 pb-2 text-lg font-semibold antialiased">Company name</span>
+            <span className="pb-2 text-lg font-semibold antialiased">Company name</span>
             <input
               type="text"
-              className="mt-0 bg-inherit block w-full px-0.5 pt-2 pb-0.5 border-b-2 border-indigo-900 outline-none"
-              placeholder="Amazon"
+              className="mt-0 bg-inherit block w-full  pt-2 pb-1 px-0.5 border-b-2 border-neutral-400 outline-none"
               name='companyName'
               onChange={handleChange}
               required
             />
           </label>
           <label className="block">
-            <span className="text-gray-700 pb-2 text-lg font-semibold antialiased">Job Id</span>
+            <span className=" pb-2 text-lg font-semibold antialiased">Job Id</span>
             <input
               type="text"
-              className="mt-0 bg-inherit block w-full  px-0.5 pt-2 pb-0.5 border-b-2 border-indigo-900 outline-none"
-              placeholder="1234"
+              className="mt-0 bg-inherit block w-full  pt-2 pb-1 px-0.5 border-b-2 border-neutral-400 outline-none"
               name='jobId'
               onChange={handleChange}
               required
             />
           </label>
           <label className="block">
-            <span className="text-gray-700 pb-2 text-lg font-semibold antialiased">Job Link</span>
+            <span className=" pb-2 text-lg font-semibold antialiased">Job Link</span>
             <input
               type="text"
-              className="mt-0 bg-inherit block w-full px-0.5 pt-2 pb-0.5 border-b-2 border-indigo-900 outline-none"
+              className="mt-0 bg-inherit block w-full  pt-2 pb-1 px-0.5 border-b-2 border-neutral-400 outline-none"
               name='jobLink'
               onChange={handleChange}
               required
             />
           </label>
-        <button onClick = {handleSubmit}>Submit</button>
+        <SubmitButton handleClick = {handleSubmit}>Add</SubmitButton>
         </div>
       </div>
     </div>

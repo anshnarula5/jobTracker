@@ -6,15 +6,16 @@ export function Draggable(props : any) {
     id: props.id,
     data:{
       id : props.id,
-      parent : props.parent
+      parent : props.parent,
+      application : props.application
     }
   });
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : undefined;
   return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className='w-full'>
       {props.children}
-    </button>
+    </div>
   );
 }

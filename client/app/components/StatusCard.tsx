@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import NewApplicationButton from './buttons/NewApplicationButton'
 import Ticket from './Ticket'
 import { Application } from '../utils/Types';
@@ -6,42 +6,29 @@ import NewApplicationForm from './NewApplicationForm';
 import { StatusMap } from '../utils/Constants';
 import { getAllApplications, updateApplicationStatus } from '../rest/apiService';
 import { Droppable } from '../dashboard/Droppable';
+import { SortableContext } from '@dnd-kit/sortable';
 
 interface StatusCardProps {
-  statusName?: string;
-  applications?: Application[],
-  onUpdate?: any
+  statusName: string;
+  applications: Application[],
 }
 
-const StatusCard = ({ statusName, jobId } :any) => {
+const StatusCard:React.FC<StatusCardProps> = ({ statusName, applications }) => {
   const [isFormOpen, setIsFormOpen] = useState<Boolean>(false);
   const [statusCode, setStatusCode] = useState(0);
-  const [applications, setApplications] = useState<Application[]>([])
-  const status = StatusMap.get(statusName)  
-  const setData = async() => {
-    const response = await getAllApplications(status)
-    setApplications(response)
-  }
-  const handleUpdate = async(jobId : any) => {
-    await updateApplicationStatus(jobId, status)
-  }
+  const status = useMemo(() => StatusMap.get(statusName), [statusName])
   useEffect(() => {
     console.log(status)
-    setData();
     if(statusCode === 200){
       setIsFormOpen(false)
     }
   }, [statusCode])
 
-  useEffect(() => {
-    console.log("Updating application!!!" + jobId + " Status : " + status)
-    handleUpdate(jobId)
-  }, [jobId])
-
   return (
-    <div className=' bg-slate-300 rounded-lg bg-opacity-40 flex-1 flex flex-col pb-3'>
+    <div className=' bg-slate-700 rounded-lg  flex-1 flex flex-col w-full text-neutral-300'>
       <Droppable id = {status}>
-      <div className='flex justify-between p-2 px-4 items-center '>
+      <div className="px-2">
+      <div className='flex justify-between p-2 items-center '>
         <h1 className='block font-sans text-3xl font-semibold leading-snug tracking-normal text-inherit antialiased'>{statusName}</h1>
         <NewApplicationButton handleClick = {setIsFormOpen}  />
       </div>
@@ -51,9 +38,7 @@ const StatusCard = ({ statusName, jobId } :any) => {
           <Ticket application = {application} key = {application.id} status = {status} parent = {status}/>
         ))}
       </div>
-      <button onClick={handleUpdate}>
-        Update
-      </button>
+      </div>
       </Droppable>
     </div>
   )
