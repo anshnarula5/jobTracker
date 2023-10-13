@@ -56,13 +56,12 @@ public class ApplicationController {
             applications = applicationService.getAllReferredApplications();
         }else if (COLD.equals(query)) {
             applications = applicationService.getAllColdApplications();
+            System.out.println("COLD APPLICATIONS : " + applications);
         }
         else if (INTERVIEW.equals(query)) {
             applications = new ArrayList<>();
         }
-        if(applications.isEmpty()){
-            throw new RuntimeException("No data present");
-        }
+
         return controllerHelper.buildSuccessResponse(applications);
     }
 //    @GetMapping("/application")
@@ -77,5 +76,15 @@ public class ApplicationController {
         } catch (Exception e){
             throw new ApplicationNotFoundException(e);
         }
+    }
+    @DeleteMapping("/application/{id}")
+    public void deleteApplication(@PathVariable int id){
+        System.out.println("Got request to delete application with Id " + id);
+        try{
+            applicationService.deleteApplicationById(id);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
     }
 }

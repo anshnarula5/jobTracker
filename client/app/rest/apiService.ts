@@ -38,5 +38,18 @@ export const updateApplicationStatus = async(id : number, newStatus : string) =>
     redirect: "follow", 
     referrerPolicy: "no-referrer",
   })
-
+}
+export const deleteApplication = async(id : number) => {
+  console.log(id)
+  const response = await fetch(URI + `/${id}`, {
+    method: "DELETE",
+    mode: "cors", 
+    cache: "no-cache",
+    credentials: "same-origin", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow", 
+    referrerPolicy: "no-referrer",
+  })
 }

@@ -81,6 +81,10 @@ public class ApplicationService {
         return allColdApplications;
     }
     @Transactional
+    public void deleteApplicationById(int id){
+        applicationDao.deleteApplicationById(id);
+    }
+    @Transactional
     public void updateApplicationStatus(int id, String status){
         if(!applicationDao.idExists(id)){
             throw new ApplicationContextException("Id does not exist - " + id );

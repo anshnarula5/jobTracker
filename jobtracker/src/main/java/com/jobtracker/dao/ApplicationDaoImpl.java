@@ -40,6 +40,14 @@ public class ApplicationDaoImpl implements ApplicationDao{
     }
 
     @Override
+    public void deleteApplicationById(int id) {
+        System.out.println("Deleting application with id : " + id);
+        Query query = entityManager.createNativeQuery("DELETE FROM Application where id = :id");
+        query.setParameter("id", id).executeUpdate();
+        System.out.println("Deletion successful");
+    }
+
+    @Override
     public List<Application> getAllReferralRequestedApplications() {
         TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE currentStatus = 'referral_requested' ORDER BY currentStatusDate DESC", Application.class);
         return query.getResultList();

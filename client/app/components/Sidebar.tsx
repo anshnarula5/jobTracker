@@ -3,7 +3,7 @@ import SidebarButton from './buttons/SidebarButton'
 
 const Sidebar = () => {
   return (
-    <div className='bg-green-400 basis-1/9 p-4'>
+    <div className='bg-green-500 basis-1/9 p-4'>
       <h1 className='text-3xl font-bold antialiased'>
       Job Tracker 
       </h1>

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface ApplicationDao {
     Application save(Application application);
     List<Application> getAllApplications();
+    void deleteApplicationById(int id);
     List<Application> getAllReferralRequestedApplications();
     List<Application> getAllReferredApplications();
     List<Application> getAllAppliedApplications();
