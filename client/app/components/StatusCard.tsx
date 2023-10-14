@@ -33,9 +33,9 @@ const StatusCard:React.FC<StatusCardProps> = ({ statusName, applications, setNew
       </div>
       <div >
         <NewApplicationForm isFormOpen = {isFormOpen} status = {status} setStatusCode = {setStatusCode} setNewApplication = {setNewApplication} />
-        {applications && applications.length > 0 && applications.map((application :any) => (
+        {applications && applications.length > 0 ? applications.map((application :any) => (
           <Ticket application = {application} key = {application.id} status = {status} parent = {status}/>
-        ))}
+        )) : <div className = "p-2"></div>}
       </div>
       </div>
 

@@ -18,37 +18,41 @@ const Dashboard = () => {
   const [isMoving, setIsMoving] = useState<boolean>(false)
   const [newApplication, setNewApplication] = useState<boolean>(false)
   const getAppliedApplications = async () => {
-    const applied = await getAllApplications("applied")
-    return applied
+    const apps = await getAllApplications("applied")
+    return apps
   }
 
   const getRefReqApplications = async () => {
-    const applied = await getAllApplications("referralRequested")
-    return applied
+    const apps = await getAllApplications("referralRequested")
+    return apps
   }
   const getReferredApplications = async () => {
-    const applied = await getAllApplications("referred")
-    return applied
+    const apps = await getAllApplications("referred")
+    return apps
   }
   const getColdApplications = async () => {
-    const applied = await getAllApplications("cold")
-    return applied
+    const apps = await getAllApplications("cold")
+    return apps
+  }
+  const getInterviewApplications = async () => {
+    const apps = await getAllApplications("interview")
+    return apps
   }
   const getApplications = async () => {
-    const [applied, refereq, referred, cold] = await Promise.all([getAppliedApplications(), getRefReqApplications(), getReferredApplications(), getColdApplications()])
+    const [applied, refereq, referred, cold, interview] = await Promise.all([getAppliedApplications(), getRefReqApplications(), getReferredApplications(), getColdApplications(), getInterviewApplications()])
     setAppliedApplications(applied)
     setColdApplications(cold)
     setRefReqApplications(refereq)
     setReferredApplications(referred)
+    setIntApplications(interview)
   }
   const fn = async (jobId: any, status: any, parent: any, application: Application) => {
     if (status === parent) {
       setIsMoving(false)
       return
     }
-    console.log(application)
+    console.log(parent)
     console.log(status)
-    await updateApplicationStatus(jobId, status)
     switch (status) {
       case "referred":
         setReferredApplications([application, ...referredApplications])
@@ -61,6 +65,9 @@ const Dashboard = () => {
         break;
       case "cold":
         setColdApplications([application, ...coldApplications])
+        break;
+      case "interview":
+        setIntApplications([application, ...intApplications])
         break;
       case "delete":
         await deleteApplication(jobId)
@@ -86,15 +93,20 @@ const Dashboard = () => {
           prev.filter((app) => app.id !== jobId)
         );
         break;
+      case 'interview':
+        setIntApplications((prev) =>
+          prev.filter((app) => app.id !== jobId)
+        );
+        break;
       default:
         break;
     }
+    await updateApplicationStatus(jobId, status)
     setIsMoving(false)
-
   }
 
   useEffect(() => {
-     getApplications()
+    getApplications()
   }, [newApplication])
 
   useEffect(() => {
@@ -124,11 +136,11 @@ const Dashboard = () => {
   return (
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
       <div className='flex flex-row space-x-6 px-8 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
-        <StatusCard statusName={COLD} applications={coldApplications} setNewApplication = {setNewApplication} newApplication = {newApplication} />
-        <StatusCard statusName={REFREQ} applications={refreqApplications} setNewApplication = {setNewApplication} newApplication = {newApplication} />
-        <StatusCard statusName={REFERRED} applications={referredApplications} setNewApplication = {setNewApplication} newApplication = {newApplication}/>
-        <StatusCard statusName={APPLIED} applications={appliedApplications} setNewApplication = {setNewApplication} newApplication = {newApplication} />
-        <StatusCard statusName={INTERVIEW} applications={intApplications} setNewApplication = {setNewApplication} newApplication = {newApplication} />
+        <StatusCard statusName={COLD} applications={coldApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+        <StatusCard statusName={REFREQ} applications={refreqApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+        <StatusCard statusName={REFERRED} applications={referredApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+        <StatusCard statusName={APPLIED} applications={appliedApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+        <StatusCard statusName={INTERVIEW} applications={intApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
       </div>
       {isMoving && <DeletionArea />}
     </DndContext>

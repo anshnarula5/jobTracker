@@ -16,9 +16,11 @@ public interface ApplicationDao {
     List<Application> getAllReferredApplications();
     List<Application> getAllAppliedApplications();
     List<Application> getAllColdApplications();
+    List<Application> getAllInterviewApplications();
     void markReferralRequested(int id, Date date);
     void markReferred(int id, Date date);
     void markApplied(int id, Date date);
+    void markInterview(int id, Date date);
     Boolean idExists(int id);
     Application getApplicationById(int id);
     ReferralDataResponse getReferralData();

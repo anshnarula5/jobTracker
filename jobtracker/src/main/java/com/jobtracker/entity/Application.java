@@ -63,4 +63,10 @@ public class Application {
 
     @Column(name = "current_status_date")
     public Date currentStatusDate;
+
+    @Column(name = "interview")
+    public Boolean interview;
+
+    @Column(name = "interview_date")
+    public Date interviewDate;
 }

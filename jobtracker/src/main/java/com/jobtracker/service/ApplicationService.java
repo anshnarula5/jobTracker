@@ -43,6 +43,10 @@ public class ApplicationService {
             application.appliedDate = date;
             application.currentStatus = "applied";
         }
+        else if(application.interview){
+            application.interviewDate = date;
+            application.currentStatus = "interview";
+        }
         Application response =  applicationDao.save(application);
         System.out.println("Application created  - success - service : "+ response.getId());
         return response;
@@ -80,6 +84,10 @@ public class ApplicationService {
         final List<Application> allColdApplications =  applicationDao.getAllColdApplications();
         return allColdApplications;
     }
+    public List<Application> getAllInterviewApplications() {
+        final List<Application> allInterviewApplications =  applicationDao.getAllInterviewApplications();
+        return allInterviewApplications;
+    }
     @Transactional
     public void deleteApplicationById(int id){
         applicationDao.deleteApplicationById(id);
@@ -102,6 +110,10 @@ public class ApplicationService {
             case "applied":
                 System.out.println("Inside service, marking applied for id" + id + "on date" + date);
                 applicationDao.markApplied(id, date);
+                break;
+            case "interview":
+                System.out.println("Inside service, marking interview for id" + id + "on date" + date);
+                applicationDao.markInterview(id, date);
                 break;
             default:
                 System.out.println("Bad request");

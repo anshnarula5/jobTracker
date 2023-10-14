@@ -56,18 +56,12 @@ public class ApplicationController {
             applications = applicationService.getAllReferredApplications();
         }else if (COLD.equals(query)) {
             applications = applicationService.getAllColdApplications();
-            System.out.println("COLD APPLICATIONS : " + applications);
         }
         else if (INTERVIEW.equals(query)) {
-            applications = new ArrayList<>();
+            applications = applicationService.getAllInterviewApplications();
         }
-
         return controllerHelper.buildSuccessResponse(applications);
     }
-//    @GetMapping("/application")
-//    public ResponseEntity<SuccessResponse<Application>> getApplicationById(int id){
-//
-//    }
     @PutMapping("/application/{id}/{status}")
     public void updateStatus(@PathVariable int id, @PathVariable String status){
         System.out.println("Starting update for id : "+ id + " Status : " +  status);

@@ -16,6 +16,7 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplicati
     applied: status === 'applied',
     referralRequested: status === 'referralRequested',
     referred: status === 'referred',
+    interview: status === 'interview'
   })
   const handleChange = (e: any) => {
     setFormData({

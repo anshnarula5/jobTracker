@@ -67,9 +67,16 @@ public class ApplicationDaoImpl implements ApplicationDao{
 
     @Override
     public List<Application> getAllColdApplications() {
-        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referred = false AND applied = false AND referralRequested = false", Application.class);
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE referred = false AND applied = false AND referralRequested = false AND interview = false" , Application.class);
         return query.getResultList();
     }
+
+    @Override
+    public List<Application> getAllInterviewApplications() {
+        TypedQuery<Application> query = entityManager.createQuery("FROM Application WHERE currentStatus = 'interview' ORDER BY currentStatusDate DESC", Application.class);
+        return query.getResultList();
+    }
+
     @Override
     public void markReferralRequested(int id, Date date) {
         System.out.println("Inside Dao call");
@@ -100,6 +107,18 @@ public class ApplicationDaoImpl implements ApplicationDao{
         int updateCount = query.setParameter("id", id).setParameter("date", date).executeUpdate();
         System.out.println("Dao call complete with update count : " + updateCount);
     }
+
+    @Override
+    public void markInterview(int id, Date date) {
+        System.out.println("Inside Dao call");
+        Query query =
+                entityManager
+                        .createQuery("UPDATE Application set interview = true, interviewDate = :date, " +
+                                "currentStatus = 'interview', currentStatusDate = :date WHERE id = :id");
+        int updateCount = query.setParameter("id", id).setParameter("date", date).executeUpdate();
+        System.out.println("Dao call complete with update count : " + updateCount);
+    }
+
     @Override
     public Boolean idExists(int id){
         System.out.println("Checking does the id exists" + id);
