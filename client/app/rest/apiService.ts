@@ -1,10 +1,17 @@
 import axios from "axios"
 import { Application } from "../utils/Types"
 const URI = "http://localhost:8080/api/application"
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhQGFhLmNvbSIsImlhdCI6MTY5ODMzODg4NiwiZXhwIjoxNjk4NDI1Mjg2fQ.3wxWZDPlwaoXGBnRJcaprRzSVn-5eHdouzpRXga6A94"
 
 export const getAllApplications = async (query: string) => {
   const response = await fetch(URI + "?query=" + query, {
     method: "GET",
+    mode : "cors",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
   })
   const { data } = await response.json()
   return data
@@ -17,7 +24,8 @@ export const addNewApplication = async (formData: Application) => {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
     },
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -34,6 +42,8 @@ export const updateApplicationStatus = async(id : number, newStatus : string) =>
     credentials: "same-origin", 
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
     },
     redirect: "follow", 
     referrerPolicy: "no-referrer",
@@ -48,6 +58,8 @@ export const deleteApplication = async(id : number) => {
     credentials: "same-origin", 
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
     },
     redirect: "follow", 
     referrerPolicy: "no-referrer",

@@ -8,19 +8,27 @@ import com.jobtracker.service.ApplicationService;
 import com.jobtracker.utils.ControllerHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.*;
 
 import static com.jobtracker.utils.Constants.*;
 
+
+
+
 @RestController
 @RequestMapping("/api")
 @Validated
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = {"Requester-Type", "Authorization"}, exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials, X-Get-Header"})
+
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final ControllerHelper controllerHelper;
@@ -79,6 +87,5 @@ public class ApplicationController {
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-
     }
 }

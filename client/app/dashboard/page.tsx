@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import StatusCard from '../components/StatusCard'
-import { APPLIED, COLD, INTERVIEW, REFERRED, REFREQ, StatusMap, } from '../utils/Constants'
+import { APPLIED, COLD, INTERVIEW, REFERRED, REFREQ, StatusList, StatusMap, } from '../utils/Constants'
 
 import { DndContext } from '@dnd-kit/core'
 import { Application } from '../utils/Types'
@@ -51,49 +51,53 @@ const Dashboard = () => {
       setIsMoving(false)
       return
     }
+    if(status < parent){
+      alert("Bad operation");
+      return
+    }
     console.log(parent)
     console.log(status)
     switch (status) {
-      case "referred":
+      case 2:
         setReferredApplications([application, ...referredApplications])
         break;
-      case "applied":
+      case 3:
         setAppliedApplications([application, ...appliedApplications])
         break;
-      case "referralRequested":
+      case 1:
         setRefReqApplications([application, ...refreqApplications])
         break;
-      case "cold":
+      case 0:
         setColdApplications([application, ...coldApplications])
         break;
-      case "interview":
+      case 4:
         setIntApplications([application, ...intApplications])
         break;
       case "delete":
         await deleteApplication(jobId)
     }
     switch (parent) {
-      case 'referred':
+      case 2:
         setReferredApplications((prev) =>
           prev.filter((app) => app.id !== jobId)
         );
         break;
-      case 'applied':
+      case 3:
         setAppliedApplications((prev) =>
           prev.filter((app) => app.id !== jobId)
         );
         break;
-      case 'referralRequested':
+      case 1:
         setRefReqApplications((prev) =>
           prev.filter((app) => app.id !== jobId)
         );
         break;
-      case 'cold':
+      case 0:
         setColdApplications((prev) =>
           prev.filter((app) => app.id !== jobId)
         );
         break;
-      case 'interview':
+      case 4:
         setIntApplications((prev) =>
           prev.filter((app) => app.id !== jobId)
         );
@@ -101,7 +105,9 @@ const Dashboard = () => {
       default:
         break;
     }
-    await updateApplicationStatus(jobId, status)
+    console.log("Updating")
+    await updateApplicationStatus(jobId, StatusList[status])
+    console.log("Done")
     setIsMoving(false)
   }
 
@@ -135,7 +141,7 @@ const Dashboard = () => {
   }
   return (
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-      <div className='flex flex-row space-x-6 px-8 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
+      <div className='flex flex-row space-x-4 px-4 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
         <StatusCard statusName={COLD} applications={coldApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
         <StatusCard statusName={REFREQ} applications={refreqApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
         <StatusCard statusName={REFERRED} applications={referredApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
