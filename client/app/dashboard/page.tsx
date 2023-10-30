@@ -7,8 +7,12 @@ import { DndContext } from '@dnd-kit/core'
 import { Application } from '../utils/Types'
 import { deleteApplication, getAllApplications, updateApplicationStatus } from '../rest/apiService'
 import DeletionArea from './DeletionArea'
+import withAuth from '../rest/withAuth'
 
 const Dashboard = () => {
+
+
+
   const [coldApplications, setColdApplications] = useState<Application[]>([]);
   const [refreqApplications, setRefReqApplications] = useState<Application[]>([]);
   const [referredApplications, setReferredApplications] = useState<Application[]>([]);
@@ -55,6 +59,7 @@ const Dashboard = () => {
       alert("Bad operation");
       return
     }
+   
     console.log(parent)
     console.log(status)
     switch (status) {
@@ -75,6 +80,7 @@ const Dashboard = () => {
         break;
       case "delete":
         await deleteApplication(jobId)
+        break;
     }
     switch (parent) {
       case 2:
@@ -106,7 +112,7 @@ const Dashboard = () => {
         break;
     }
     console.log("Updating")
-    await updateApplicationStatus(jobId, StatusList[status])
+    if(status != "delete") await updateApplicationStatus(jobId, StatusList[status])
     console.log("Done")
     setIsMoving(false)
   }
@@ -122,6 +128,7 @@ const Dashboard = () => {
 
   function handleDragEnd(event: any) {
     // console.log("END", event)
+    setIsMoving(false)
     const startingCol = event.active.data.current?.parent ?? "";
     const updatedApplication = event.active.data.current?.application ?? {};
     const endingCol = event.over?.id;
@@ -139,6 +146,8 @@ const Dashboard = () => {
     setIsMoving(true)
     // console.log("START", event)
   }
+
+
   return (
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
       <div className='flex flex-row space-x-4 px-4 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
@@ -153,6 +162,6 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default withAuth(Dashboard)
 
 

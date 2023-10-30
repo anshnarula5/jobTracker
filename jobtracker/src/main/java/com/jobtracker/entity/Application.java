@@ -1,12 +1,7 @@
 package com.jobtracker.entity;
 
 import jakarta.annotation.Nonnull;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -24,6 +19,13 @@ public class Application {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    private User user;
+
+    @Column(name = "user_id")
+    public int userId;
 
     @Column(name = "job_id")
     @NotBlank(message = "jobId cannot be blank")

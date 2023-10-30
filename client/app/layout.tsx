@@ -1,8 +1,9 @@
+import { ReduxProvider } from '@/redux/Provider'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Topbar from './components/Topbar'
 import Sidebar from './components/Sidebar'
+import Topbar from './components/Topbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-purple-700">
-        <div className='flex min-h-screen'>
-          <Sidebar />
-          <div className='flex-1 bg-pink-600'>
-            {children}
+        <ReduxProvider>
+          <div className=' min-h-screen'>
+            <div className=' bg-pink-600 flex flex-col'>
+             <Topbar />
+              {children}
+            </div>
           </div>
-        </div>
+        </ReduxProvider>
       </body>
     </html>
   )

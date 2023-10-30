@@ -18,11 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.*;
-
 import static com.jobtracker.utils.Constants.*;
-
-
-
 
 @RestController
 @RequestMapping("/api")
@@ -70,7 +66,7 @@ public class ApplicationController {
         }
         return controllerHelper.buildSuccessResponse(applications);
     }
-    @PutMapping("/application/{id}/{status}")
+    @PutMapping("/application/update/{id}/{status}")
     public void updateStatus(@PathVariable int id, @PathVariable String status){
         System.out.println("Starting update for id : "+ id + " Status : " +  status);
         try {
@@ -79,7 +75,7 @@ public class ApplicationController {
             throw new ApplicationNotFoundException(e);
         }
     }
-    @DeleteMapping("/application/{id}")
+    @DeleteMapping("/application/delete/{id}")
     public void deleteApplication(@PathVariable int id){
         System.out.println("Got request to delete application with Id " + id);
         try{

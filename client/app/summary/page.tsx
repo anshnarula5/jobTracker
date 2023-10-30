@@ -1,4 +1,6 @@
+"use client"
 import React from 'react'
+import withAuth from '../rest/withAuth'
 
 const Summary = () => {
   return (
@@ -6,4 +8,4 @@ const Summary = () => {
   )
 }
 
-export default Summary
+export default withAuth(Summary)

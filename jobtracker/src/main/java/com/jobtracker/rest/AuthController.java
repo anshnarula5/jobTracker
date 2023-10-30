@@ -23,6 +23,7 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request){
+        System.out.println("INSIDE LOGIN API");
         return ResponseEntity.ok(authService.authenticate(request));
     }
 }
