@@ -8,10 +8,13 @@ import { Application } from '../utils/Types'
 import { deleteApplication, getAllApplications, updateApplicationStatus } from '../rest/apiService'
 import DeletionArea from './DeletionArea'
 import withAuth from '../rest/withAuth'
+import { useSelector } from 'react-redux'
 
 const Dashboard = () => {
 
+  const userState = useSelector((state : any) => state.authReducer.value)
 
+  const authtoken = userState.authToken;
 
   const [coldApplications, setColdApplications] = useState<Application[]>([]);
   const [refreqApplications, setRefReqApplications] = useState<Application[]>([]);
@@ -22,24 +25,24 @@ const Dashboard = () => {
   const [isMoving, setIsMoving] = useState<boolean>(false)
   const [newApplication, setNewApplication] = useState<boolean>(false)
   const getAppliedApplications = async () => {
-    const apps = await getAllApplications("applied")
+    const apps = await getAllApplications("applied", authtoken)
     return apps
   }
 
   const getRefReqApplications = async () => {
-    const apps = await getAllApplications("referralRequested")
+    const apps = await getAllApplications("referralRequested", authtoken)
     return apps
   }
   const getReferredApplications = async () => {
-    const apps = await getAllApplications("referred")
+    const apps = await getAllApplications("referred", authtoken)
     return apps
   }
   const getColdApplications = async () => {
-    const apps = await getAllApplications("cold")
+    const apps = await getAllApplications("cold", authtoken)
     return apps
   }
   const getInterviewApplications = async () => {
-    const apps = await getAllApplications("interview")
+    const apps = await getAllApplications("interview", authtoken)
     return apps
   }
   const getApplications = async () => {
@@ -79,7 +82,7 @@ const Dashboard = () => {
         setIntApplications([application, ...intApplications])
         break;
       case "delete":
-        await deleteApplication(jobId)
+        await deleteApplication(jobId,authtoken )
         break;
     }
     switch (parent) {
@@ -112,7 +115,7 @@ const Dashboard = () => {
         break;
     }
     console.log("Updating")
-    if(status != "delete") await updateApplicationStatus(jobId, StatusList[status])
+    if(status != "delete") await updateApplicationStatus(jobId, StatusList[status], authtoken)
     console.log("Done")
     setIsMoving(false)
   }

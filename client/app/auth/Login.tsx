@@ -21,7 +21,9 @@ const Login = ({ userData, setUserData, setIsLogin } : any) => {
   const handleSubmit = async(e : any) => {
     e.preventDefault()
     console.log("submuit")
-    const { email : mail, firstName, id, lastName, token : authToken} = await authenticate({email, password});
+    const resData = await authenticate({email, password});
+    const { email : mail, firstName, id, lastName, token : authToken} = resData;
+    if(!resData) return
     const name = firstName + " " + lastName
     const data = {
       name, email : mail, id, authToken

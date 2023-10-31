@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar'
+import Alert from './components/Alert'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <ReduxProvider>
           <div className=' min-h-screen'>
             <div className=' bg-pink-600 flex flex-col'>
+              <Alert />
              <Topbar />
               {children}
             </div>

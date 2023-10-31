@@ -3,6 +3,7 @@ package com.jobtracker.dao;
 import com.jobtracker.entity.Application;
 import com.jobtracker.entity.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,15 @@ public class UserDaoImpl implements UserDao{
     @Override
     public Optional<User> findByEmail(final String email) {
         System.out.println("Finding user with email id : " + email);
-        TypedQuery<User> query = entityManager.createQuery("FROM User WHERE email = :email", User.class);
-        return Optional.ofNullable(query.setParameter("email", email).getSingleResult());
+        try {
+            TypedQuery<User> query = entityManager.createQuery("FROM User WHERE email = :email", User.class);
+            User user = query.setParameter("email", email).getSingleResult();
+            System.out.println("Inside dao impl");
+            return Optional.of(user);
+        } catch (NoResultException e) {
+            System.out.println("User not found for email: " + email);
+            return Optional.empty();
+        }
     }
 
     @Override

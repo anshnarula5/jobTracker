@@ -10,6 +10,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ApplicationExceptionHandler {
 
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApplicationErrorResponse> handleUserExceptions(UserNotFoundException e){
+        ApplicationErrorResponse errorResponse = new ApplicationErrorResponse();
+        errorResponse.setMessage(e.getMessage());
+        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setTimestamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(ApplicationNotFoundException.class)
     public ResponseEntity<ApplicationErrorResponse> handleException(ApplicationNotFoundException e){
         ApplicationErrorResponse errorResponse = new ApplicationErrorResponse();

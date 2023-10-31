@@ -5,6 +5,7 @@ import com.jobtracker.entity.AuthenticationRequest;
 import com.jobtracker.entity.AuthenticationResponse;
 import com.jobtracker.entity.RegisterRequest;
 import com.jobtracker.entity.User;
+import com.jobtracker.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,10 @@ public class AuthService {
         userDao.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .id(user.getId())
                 .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request){
@@ -42,7 +49,12 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        var user = userDao.findByEmail(request.getEmail()).orElseThrow();
+        System.out.println("before");
+        Optional<User> userOptional = userDao.findByEmail(request.getEmail());
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException("No user exists for this email id.");
+        }
+        User user = userOptional.get();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken)
                 .firstName(user.getFirstName())

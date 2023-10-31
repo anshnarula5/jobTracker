@@ -2,15 +2,21 @@
 import Link from 'next/link'
 import React from 'react'
 import SidebarButton from './buttons/SidebarButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
 import { redirect } from 'next/navigation'
 import { logOut } from '@/redux/features/authSlice'
+import { createAlert } from '@/redux/features/alertSlice'
 const Topbar = () => {
   const dispatch = useDispatch()
+  const handleAlert = () => {
+    dispatch(createAlert({message : "Good morning", type : "error"}))
+  }
+  const isLoggedIn = useSelector((state : any) => state.authReducer.value.authToken)
   const handleLogout = async() => {
     dispatch(logOut())
   }
+  if(!isLoggedIn) return
   return (
     <nav className="bg-green-500 border-gray-200 ">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -30,6 +36,9 @@ const Topbar = () => {
         <SidebarButton text = "Summary" to = {"/summary"} />
         <button className='p-3 bg-sky-800 mx-1' onClick={handleLogout}>
           Logout
+        </button>
+        <button className='p-3 bg-sky-800 mx-1' onClick={handleAlert}>
+          Clicl me
         </button>
           </ul>
         </div>

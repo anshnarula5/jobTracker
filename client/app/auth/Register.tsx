@@ -1,27 +1,45 @@
 // Register.js
-import React from 'react';
+import { logIn } from '@/redux/features/authSlice';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../rest/apiService';
+import { redirect } from 'next/navigation';
 
 const Register = ({ userData, setUserData, setIsLogin } : any) => {
   const { email, password, firstName, lastName } = userData;
-
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch()
+  const handleSubmit = async(e : any) => {
     e.preventDefault()
-    console.log("submuit")
-    console.log(email, password, firstName, lastName)
+    console.log(userData)
+    const { email : mail, firstName, id, lastName, token : authToken} = await register(userData);
+    const name = firstName + " " + lastName
+    const data = {
+      name, email : mail, id, authToken
+    }
+    console.log(data)
+   dispatch(logIn(data))
   }
-  const handleEmailChange = (e) => {
+
+  const state = useSelector((state : any)=> state.authReducer.value)
+
+  useEffect(() => {
+    if(state.authToken){
+      redirect("/")
+    }
+  }, [state])
+  const handleEmailChange = (e:any) => {
     setUserData({ ...userData, email: e.target.value });
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e:any) => {
     setUserData({ ...userData, password: e.target.value });
   };
 
-  const handleFirstNameChange = (e) => {
+  const handleFirstNameChange = (e:any) => {
     setUserData({ ...userData, firstName: e.target.value });
   };
 
-  const handleLastNameChange = (e) => {
+  const handleLastNameChange = (e:any) => {
     setUserData({ ...userData, lastName: e.target.value });
   };
 

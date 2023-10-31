@@ -2,8 +2,13 @@ import React, { useState } from 'react'
 import { convertDate } from '../utils'
 import { addNewApplication } from '../rest/apiService'
 import SubmitButton from './buttons/SubmitButton'
+import { useSelector } from 'react-redux'
 
 const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplication }: any) => {
+  const userState = useSelector((state : any) => state.authReducer.value)
+
+  const authtoken = userState.authToken;
+
   const [error, setError] = useState<boolean>(false)
   const [nameError, setNameError] = useState<boolean>(false);
   const [jobIdError, setJobIdError] = useState<boolean>(false);
@@ -33,7 +38,7 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplicati
       setError(true);
       return;
     }
-    const response = await addNewApplication(formData)
+    const response = await addNewApplication(formData, authtoken)
     const code = response.statusCode;
     console.log(response)
     setStatusCode(code)
