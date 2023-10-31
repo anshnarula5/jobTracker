@@ -8,10 +8,11 @@ import { Application } from '../utils/Types'
 import { deleteApplication, getAllApplications, updateApplicationStatus } from '../rest/apiService'
 import DeletionArea from './DeletionArea'
 import withAuth from '../rest/withAuth'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createAlert } from '@/redux/features/alertSlice'
 
 const Dashboard = () => {
-
+  const dispatch = useDispatch()
   const userState = useSelector((state : any) => state.authReducer.value)
 
   const authtoken = userState.authToken;
@@ -59,12 +60,13 @@ const Dashboard = () => {
       return
     }
     if(status < parent){
-      alert("Bad operation");
+      dispatch(createAlert({
+        message : "Can't go back in sequence, it will mess up summary",
+        type : "error"
+      }))
       return
     }
    
-    console.log(parent)
-    console.log(status)
     switch (status) {
       case 2:
         setReferredApplications([application, ...referredApplications])
@@ -83,6 +85,10 @@ const Dashboard = () => {
         break;
       case "delete":
         await deleteApplication(jobId,authtoken )
+        dispatch(createAlert({
+          message : "Deleted   application",
+          type : "success"
+        }))
         break;
     }
     switch (parent) {

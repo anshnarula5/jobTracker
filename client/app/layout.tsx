@@ -20,10 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-purple-700">
+      <body className="">
         <ReduxProvider>
           <div className=' min-h-screen'>
-            <div className=' bg-pink-600 flex flex-col'>
+            <div className=' flex flex-col'>
               <Alert />
              <Topbar />
               {children}

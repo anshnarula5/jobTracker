@@ -35,7 +35,7 @@ const AlertItem = ({ alert, index, totalAlerts }: { alert: any; index: number; t
   const color = alert.type === "success" ? "bg-green-400" : "bg-red-400";
 
   return show ? (
-    <div className={`${color} p-4 rounded-md flex items-center justify-between shadow-md my-2`}>
+    <div className={`${color} p-4 rounded-md flex items-center justify-between shadow-md my-2 z-50`}>
       <div className="flex items-center">
         <span className="">{alert.message }</span>
       </div>

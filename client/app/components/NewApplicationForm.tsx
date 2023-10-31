@@ -1,10 +1,13 @@
+"use client"
 import React, { useState } from 'react'
 import { convertDate } from '../utils'
 import { addNewApplication } from '../rest/apiService'
 import SubmitButton from './buttons/SubmitButton'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createAlert } from '@/redux/features/alertSlice'
 
 const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplication }: any) => {
+  const dispatch = useDispatch()
   const userState = useSelector((state : any) => state.authReducer.value)
 
   const authtoken = userState.authToken;
@@ -42,6 +45,10 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplicati
     const code = response.statusCode;
     console.log(response)
     setStatusCode(code)
+    dispatch(createAlert({
+      message : "Added new application",
+      type : "success"
+    }))
     setNewApplication((prev: any) => !prev)
   }
   return (
