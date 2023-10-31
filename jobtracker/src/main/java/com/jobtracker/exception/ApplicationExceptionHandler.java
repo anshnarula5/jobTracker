@@ -3,6 +3,7 @@ package com.jobtracker.exception;
 import com.jobtracker.rest.ApplicationErrorResponse;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,14 +12,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ApplicationExceptionHandler {
 
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApplicationErrorResponse> handleRegisterException(UserAlreadyExistsException e){
+        ApplicationErrorResponse errorResponse = new ApplicationErrorResponse();
+        errorResponse.setMessage(e.getMessage());
+        errorResponse.setStatusCode(409);
+        errorResponse.setTimestamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(409));
+    }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApplicationErrorResponse> handleUserExceptions(UserNotFoundException e){
         ApplicationErrorResponse errorResponse = new ApplicationErrorResponse();
         errorResponse.setMessage(e.getMessage());
-        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setStatusCode(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ApplicationNotFoundException.class)

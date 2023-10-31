@@ -1,42 +1,61 @@
 "// Login.js"
 import React, { useEffect } from 'react';
-import { authenticate } from '../rest/apiService';
-import { logIn, logOut  } from '@/redux/features/authSlice';
+import { logIn, logOut } from '@/redux/features/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { redirect } from 'next/navigation';
+import { createAlert } from '@/redux/features/alertSlice';
+import axios from 'axios';
 
-const Login = ({ userData, setUserData, setIsLogin } : any) => {
+const Login = ({ userData, setUserData, setIsLogin }: any) => {
   const { email, password } = userData;
 
   const dispatch = useDispatch<AppDispatch>()
-  const state = useSelector((state : any)=> state.authReducer.value)
+  const state = useSelector((state: any) => state.authReducer.value)
 
   useEffect(() => {
-    if(state.authToken){
+    if (state.authToken) {
       redirect("/")
     }
   }, [state])
 
-  const handleSubmit = async(e : any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
-    console.log("submuit")
-    const resData = await authenticate({email, password});
-    const { email : mail, firstName, id, lastName, token : authToken} = resData;
-    if(!resData) return
-    const name = firstName + " " + lastName
-    const data = {
-      name, email : mail, id, authToken
+    try {
+      const { data } = await axios.post("http://localhost:8080/api/auth/authenticate", { email, password });
+      const { data: resData } = data;
+      const { email: mail, firstName, id, lastName, token: authToken } = resData;
+      const name = firstName + " " + lastName
+      const saveData = {
+        name, email: mail, id, authToken
+      }
+      dispatch(createAlert({
+        message: `Welcome ${firstName}`,
+        type: "success"
+      }))
+      dispatch(logIn(saveData))
+    } catch (error: any) {
+      console.log(error)
+      if (error.response.status === 401) {
+        dispatch(createAlert({
+          message: "Wrong credentials.",
+          type: "error"
+        }))
+      }
+      else{
+        dispatch(createAlert({
+          message: "Something went wrong.",
+          type: "error"
+        }))
+      }
     }
-    console.log(data)
-   dispatch(logIn(data))
   }
 
-  const handleEmailChange = (e : any) => {
+  const handleEmailChange = (e: any) => {
     setUserData({ ...userData, email: e.target.value });
   };
 
-  const handlePasswordChange = (e : any) => {
+  const handlePasswordChange = (e: any) => {
     setUserData({ ...userData, password: e.target.value });
   };
 
@@ -69,10 +88,10 @@ const Login = ({ userData, setUserData, setIsLogin } : any) => {
         </button>
       </div>
       <div className='mt-4 text-center'>
-        Don't have an account? 
+        Don't have an account?
         <div className='text-green-600 cursor-pointer'
           onClick={() => setIsLogin(false)}
-          >Register</div>
+        >Register</div>
       </div>
     </form>
   );

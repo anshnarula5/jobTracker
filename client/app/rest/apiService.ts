@@ -66,31 +66,6 @@ export const deleteApplication = async (id: number, token: string) => {
   })
 }
 
-export const authenticate = async (formData: any) => {
-  console.log(formData)
-  let response
-  try {
-    response = await fetch("http://localhost:8080/api/auth/authenticate", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': '*'
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-    })
-  } catch (e) {
-    console.log(e)
-  }
-  console.log(response)
-  const {data} = await response?.json()
-  console.log(data)
-  return data
-}
 
 export const register = async (formData: any) => {
   const response = await fetch("http://localhost:8080/api/auth/register", {
@@ -106,6 +81,6 @@ export const register = async (formData: any) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
   })
-  const {data} = await response.json()
+  const { data } = await response.json()
   return data
 }

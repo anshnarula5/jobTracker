@@ -4,20 +4,43 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../rest/apiService';
 import { redirect } from 'next/navigation';
+import axios from 'axios';
+import { createAlert } from '@/redux/features/alertSlice';
 
 const Register = ({ userData, setUserData, setIsLogin } : any) => {
   const { email, password, firstName, lastName } = userData;
   const dispatch = useDispatch()
   const handleSubmit = async(e : any) => {
     e.preventDefault()
-    console.log(userData)
-    const { email : mail, firstName, id, lastName, token : authToken} = await register(userData);
-    const name = firstName + " " + lastName
-    const data = {
-      name, email : mail, id, authToken
+    try {
+      console.log(userData)
+      const { data } = await axios.post("http://localhost:8080/api/auth/register", userData);
+      const { data: resData } = data;
+      const { email: mail, firstName, id, lastName, token: authToken } = resData;
+      const name = firstName + " " + lastName
+      const saveData = {
+        name, email: mail, id, authToken
+      }
+      dispatch(createAlert({
+        message: `Welcome ${firstName}`,
+        type: "success"
+      }))
+      dispatch(logIn(saveData))
+    } catch (error: any) {
+      console.log(error)
+      if (error.response.status === 409) {
+        dispatch(createAlert({
+          message: "Email already exists, try login.",
+          type: "error"
+        }))
+      }
+      else{
+        dispatch(createAlert({
+          message: "Something went wrong.",
+          type: "error"
+        }))
+      }
     }
-    console.log(data)
-   dispatch(logIn(data))
   }
 
   const state = useSelector((state : any)=> state.authReducer.value)

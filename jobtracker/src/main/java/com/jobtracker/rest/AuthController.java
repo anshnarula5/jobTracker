@@ -3,6 +3,7 @@ package com.jobtracker.rest;
 import com.jobtracker.entity.*;
 import com.jobtracker.exception.ApplicationCreationException;
 import com.jobtracker.exception.SuccessResponse;
+import com.jobtracker.exception.UserAlreadyExistsException;
 import com.jobtracker.exception.UserNotFoundException;
 import com.jobtracker.service.AuthService;
 import com.jobtracker.utils.ControllerHelper;
@@ -26,9 +27,13 @@ public class AuthController {
             AuthenticationResponse authenticationResponse = authService.register(request);
             return controllerHelper.buildSuccessResponse(authenticationResponse);
         }
+        catch (UserAlreadyExistsException e){
+            System.out.println("User Already Exists");
+            throw new UserAlreadyExistsException(e);
+        }
         catch (Exception e){
             System.out.println("User register failed");
-            throw new UserNotFoundException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,9 +44,13 @@ public class AuthController {
             AuthenticationResponse authenticationResponse = authService.authenticate(request);
             return controllerHelper.buildSuccessResponse(authenticationResponse);
         }
-        catch (Exception e){
+        catch (UserNotFoundException e){
             System.out.println("User auth failed");
             throw new UserNotFoundException(e);
+        }
+        catch (Exception e){
+            System.out.println("User register failed");
+            throw new RuntimeException(e);
         }
     }
 }
