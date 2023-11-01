@@ -10,11 +10,12 @@ import DeletionArea from './DeletionArea'
 import withAuth from '../rest/withAuth'
 import { useDispatch, useSelector } from 'react-redux'
 import { createAlert } from '@/redux/features/alertSlice'
+import Loading from '../components/Loading'
 
 const Dashboard = () => {
   const dispatch = useDispatch()
-  const userState = useSelector((state : any) => state.authReducer.value)
-
+  const userState = useSelector((state: any) => state.authReducer.value)
+  const [isLoading, setIsLoading] = useState(false);
   const authtoken = userState.authToken;
 
   const [coldApplications, setColdApplications] = useState<Application[]>([]);
@@ -47,26 +48,28 @@ const Dashboard = () => {
     return apps
   }
   const getApplications = async () => {
+    setIsLoading(true)
     const [applied, refereq, referred, cold, interview] = await Promise.all([getAppliedApplications(), getRefReqApplications(), getReferredApplications(), getColdApplications(), getInterviewApplications()])
     setAppliedApplications(applied)
     setColdApplications(cold)
     setRefReqApplications(refereq)
     setReferredApplications(referred)
     setIntApplications(interview)
+    setIsLoading(false)
   }
   const fn = async (jobId: any, status: any, parent: any, application: Application) => {
     if (status === parent) {
       setIsMoving(false)
       return
     }
-    if(status < parent){
+    if (status < parent) {
       dispatch(createAlert({
-        message : "Can't go back in sequence, it will mess up summary",
-        type : "error"
+        message: "Can't go back in sequence, it will mess up summary",
+        type: "error"
       }))
       return
     }
-   
+
     switch (status) {
       case 2:
         setReferredApplications([application, ...referredApplications])
@@ -84,10 +87,10 @@ const Dashboard = () => {
         setIntApplications([application, ...intApplications])
         break;
       case "delete":
-        await deleteApplication(jobId,authtoken )
+        await deleteApplication(jobId, authtoken)
         dispatch(createAlert({
-          message : "Deleted   application",
-          type : "success"
+          message: "Deleted   application",
+          type: "success"
         }))
         break;
     }
@@ -121,7 +124,7 @@ const Dashboard = () => {
         break;
     }
     console.log("Updating")
-    if(status != "delete") await updateApplicationStatus(jobId, StatusList[status], authtoken)
+    if (status != "delete") await updateApplicationStatus(jobId, StatusList[status], authtoken)
     console.log("Done")
     setIsMoving(false)
   }
@@ -159,13 +162,20 @@ const Dashboard = () => {
 
   return (
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-      <div className='flex flex-row space-x-4 px-4 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
-        <StatusCard statusName={COLD} applications={coldApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
-        <StatusCard statusName={REFREQ} applications={refreqApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
-        <StatusCard statusName={REFERRED} applications={referredApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
-        <StatusCard statusName={APPLIED} applications={appliedApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
-        <StatusCard statusName={INTERVIEW} applications={intApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
-      </div>
+      {isLoading ?
+        <div className='bg-slate-900 min-h-screen'>
+          <Loading />
+        </div>
+        :
+        <div className='flex flex-row space-x-4 px-4 py-3 flex-wrap justify-between items-start bg-slate-900 min-h-screen'>
+          <StatusCard statusName={COLD} applications={coldApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+          <StatusCard statusName={REFREQ} applications={refreqApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+          <StatusCard statusName={REFERRED} applications={referredApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+          <StatusCard statusName={APPLIED} applications={appliedApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+          <StatusCard statusName={INTERVIEW} applications={intApplications} setNewApplication={setNewApplication} newApplication={newApplication} />
+        </div>
+      }
+
       {isMoving && <DeletionArea />}
     </DndContext>
   )
