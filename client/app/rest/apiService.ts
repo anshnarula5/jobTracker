@@ -84,3 +84,45 @@ export const register = async (formData: any) => {
   const { data } = await response.json()
   return data
 }
+
+export const getStatusDistribution = async(token : string) => {
+  const {data} = await axios.get(URI + "/summary/status-distribution", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
+    },
+  })
+  return data
+}
+
+export const getReferralAnalysis = async(token : string) => {
+  const {data} = await axios.get(URI + "/summary/referral-analysis", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
+    },
+  })
+  return data
+}
+export const getApplicationsCount = async(token : string) => {
+  const {data} = await axios.get(URI + "/summary/application-count", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
+    },
+  })
+  return data
+}
+export const getCompanyDistribution = async(token : string) => {
+  const {data} = await axios.get(URI + "/summary/company-distribution", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*'
+    },
+  })
+  return data
+}

@@ -1,5 +1,7 @@
 package com.jobtracker.dao;
 
+import com.jobtracker.dto.CompanyDistributionResponse;
+import com.jobtracker.dto.StatusDistributionResponse;
 import com.jobtracker.entity.Application;
 import com.jobtracker.entity.ReferralDataResponse;
 import jakarta.persistence.EntityManager;
@@ -8,10 +10,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ApplicationDaoImpl implements ApplicationDao{
@@ -129,4 +128,75 @@ public class ApplicationDaoImpl implements ApplicationDao{
         query.setParameter("userId", userId);
         return (ReferralDataResponse) query.getSingleResult();
     }
+
+    @Override
+    public Long getInterestedCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.currentStatus = 'interested'", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Long getReferralRequestedCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.currentStatus = 'referral_requested'", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Long getReferredCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.currentStatus = 'referred'", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Long getAppliedCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.currentStatus = 'applied'", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Long getInterviewCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.currentStatus = 'interview'", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public long getSuccessfulReferralRequestCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.referralRequested = true and e.referred = true", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public long getUnsuccessfulReferralRequestCount(int userId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(e) FROM Application e WHERE e.userId = :userId and e.referralRequested = true and e.referred = false", Long.class);
+        query.setParameter("userId", userId);
+        return query.getSingleResult();
+    }
+    @Override
+    public long getApplicationCount(int userId){
+        Query query = entityManager.createQuery("SELECT count(a) FROM Application a WHERE a.userId = :userId");
+        return (long) query.setParameter("userId", userId).getSingleResult();
+    }
+
+    @Override
+    public List<CompanyDistributionResponse> getCompanyDistributionData(int userId) {
+        String jpql = "SELECT a.companyName, COUNT(a) FROM Application a WHERE a.userId = :userId GROUP BY a.companyName";
+        TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
+        List<Object[]> results = query.setParameter("userId", userId).getResultList();
+
+        List<CompanyDistributionResponse> responseList = new ArrayList<>();
+        for (Object[] result : results) {
+            String companyName = (String) result[0];
+            Long count = (Long) result[1];
+            CompanyDistributionResponse response = new CompanyDistributionResponse(companyName, count);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
 }

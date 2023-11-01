@@ -1,6 +1,9 @@
 package com.jobtracker.service;
 
 import com.jobtracker.dao.ApplicationDao;
+import com.jobtracker.dto.CompanyDistributionResponse;
+import com.jobtracker.dto.ReferralRequestAnalysisResponse;
+import com.jobtracker.dto.StatusDistributionResponse;
 import com.jobtracker.entity.Application;
 import com.jobtracker.entity.User;
 import com.jobtracker.exception.ApplicationNotFoundException;
@@ -66,6 +69,7 @@ public class ApplicationService {
 
     public List<Application> getAllApplications(){
         final User user = authService.getLoggedInUser();
+
         if (user != null) {
             return applicationDao.getAllApplications(user.getId());
         } else {
@@ -152,5 +156,49 @@ public class ApplicationService {
                 System.out.println("Bad request");
         }
         System.out.println("Signing off - service");
+    }
+
+    public List<StatusDistributionResponse> getStatusDistribution() {
+        User user = authService.getLoggedInUser();
+        if(user == null) throw new ApplicationContextException("User not found");
+        List<StatusDistributionResponse> statusDistributionList = new ArrayList<>();
+        int userId = user.getId();
+        long interestedCount = applicationDao.getInterestedCount(userId);
+        long referralRequestedCount = applicationDao.getReferralRequestedCount(userId);
+        long referredCount = applicationDao.getReferredCount(userId);
+        long appliedCount = applicationDao.getAppliedCount(userId);
+        long interviewCount = applicationDao.getInterviewCount(userId);
+
+        statusDistributionList.add(new StatusDistributionResponse("interested", interestedCount));
+        statusDistributionList.add(new StatusDistributionResponse("referral_requested", referralRequestedCount));
+        statusDistributionList.add(new StatusDistributionResponse("referred", referredCount));
+        statusDistributionList.add(new StatusDistributionResponse("applied", appliedCount));
+        statusDistributionList.add(new StatusDistributionResponse("interview", interviewCount));
+
+        return statusDistributionList;
+    }
+
+    public ReferralRequestAnalysisResponse getReferralRequestAnalysis() {
+        User user = authService.getLoggedInUser();
+        if(user == null) throw new ApplicationContextException("User not found");
+        int userId = user.getId();
+        long successfulCount = applicationDao.getSuccessfulReferralRequestCount(userId);
+        long unsuccessfulCount = applicationDao.getUnsuccessfulReferralRequestCount(userId);
+
+        return new ReferralRequestAnalysisResponse(successfulCount, unsuccessfulCount);
+    }
+
+    public long getApplicationsCount(){
+        User user = authService.getLoggedInUser();
+        if(user == null) throw new ApplicationContextException("User not found");
+        int userId = user.getId();
+        return applicationDao.getApplicationCount(userId);
+    }
+
+    public List<CompanyDistributionResponse>  getCompanyDistribution(){
+        User user = authService.getLoggedInUser();
+        if(user == null) throw new ApplicationContextException("User not found");
+        int userId = user.getId();
+        return applicationDao.getCompanyDistributionData(userId);
     }
 }

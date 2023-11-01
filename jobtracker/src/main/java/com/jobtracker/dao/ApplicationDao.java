@@ -1,5 +1,7 @@
 package com.jobtracker.dao;
 
+import com.jobtracker.dto.CompanyDistributionResponse;
+import com.jobtracker.dto.StatusDistributionResponse;
 import com.jobtracker.entity.Application;
 import com.jobtracker.entity.ReferralDataResponse;
 
@@ -24,4 +26,13 @@ public interface ApplicationDao {
     Boolean idExists(int id, int userId);
     Application getApplicationById(int id, int userId);
     ReferralDataResponse getReferralData(int userId);
+    Long getInterestedCount(int userId);
+    Long getReferralRequestedCount(int userId);
+    Long getReferredCount(int userId);
+    Long getAppliedCount(int userId);
+    Long getInterviewCount(int userId);
+    long getSuccessfulReferralRequestCount(int userId);
+    long getUnsuccessfulReferralRequestCount(int userId);
+    long getApplicationCount(int userId);
+    List<CompanyDistributionResponse>  getCompanyDistributionData(int userId);
 }

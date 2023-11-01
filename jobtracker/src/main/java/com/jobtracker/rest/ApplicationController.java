@@ -1,5 +1,8 @@
 package com.jobtracker.rest;
 
+import com.jobtracker.dto.CompanyDistributionResponse;
+import com.jobtracker.dto.ReferralRequestAnalysisResponse;
+import com.jobtracker.dto.StatusDistributionResponse;
 import com.jobtracker.entity.Application;
 import com.jobtracker.exception.ApplicationCreationException;
 import com.jobtracker.exception.ApplicationNotFoundException;
@@ -84,4 +87,22 @@ public class ApplicationController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("/application/summary/status-distribution")
+    public List<StatusDistributionResponse> getStatusDistribution(){
+        return applicationService.getStatusDistribution();
+    }
+    @GetMapping("/application/summary/referral-analysis")
+    public ReferralRequestAnalysisResponse getReferralAnalysis(){
+        return applicationService.getReferralRequestAnalysis();
+    }
+    @GetMapping("/application/summary/application-count")
+    public Long getApplicationsCount(){
+        return applicationService.getApplicationsCount();
+    }
+    @GetMapping("/application/summary/company-distribution")
+    public List<CompanyDistributionResponse>  getCompanyDistribution(){
+        return applicationService.getCompanyDistribution();
+    }
+
 }
