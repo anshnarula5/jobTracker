@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { convertDate } from '../utils'
-import { addNewApplication } from '../rest/apiService'
+import { addNewApplication, getCompanyLogo } from '../rest/apiService'
 import SubmitButton from './buttons/SubmitButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { createAlert } from '@/redux/features/alertSlice'
@@ -24,7 +24,8 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplicati
     applied: status === 'applied',
     referralRequested: status === 'referralRequested',
     referred: status === 'referred',
-    interview: status === 'interview'
+    interview: status === 'interview',
+    logo: ""
   })
   const handleChange = (e: any) => {
     setFormData({
@@ -42,6 +43,7 @@ const NewApplicationForm = ({ isFormOpen, status, setStatusCode, setNewApplicati
       return;
     }
     const response = await addNewApplication(formData, authtoken)
+    console.log(formData)
     const code = response.statusCode;
     console.log(response)
     setStatusCode(code)

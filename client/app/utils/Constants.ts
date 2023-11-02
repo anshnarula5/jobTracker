@@ -1,4 +1,4 @@
-export const COLD = "Cold"
+export const COLD = "Interested"
 export const REFREQ = "Referral Requested"
 export const REFERRED = "Referred"
 export const APPLIED = "Applied"

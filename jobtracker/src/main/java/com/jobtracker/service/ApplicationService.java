@@ -2,6 +2,7 @@ package com.jobtracker.service;
 
 import com.jobtracker.dao.ApplicationDao;
 import com.jobtracker.dto.CompanyDistributionResponse;
+import com.jobtracker.dto.CompanyLogoResponse;
 import com.jobtracker.dto.ReferralRequestAnalysisResponse;
 import com.jobtracker.dto.StatusDistributionResponse;
 import com.jobtracker.entity.Application;
@@ -13,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,17 +28,17 @@ import java.util.logging.Logger;
 public class ApplicationService {
     private final ApplicationDao applicationDao;
     private final AuthService authService;
-
+    private final ExternalApiService externalApiService;
     @Autowired
-    public ApplicationService(final ApplicationDao applicationDao, final AuthService authService){
+    public ApplicationService(final ApplicationDao applicationDao, final AuthService authService, final ExternalApiService externalApiService){
         this.applicationDao = applicationDao;
         this.authService = authService;
+        this.externalApiService = externalApiService;
     }
     @Transactional
     public Application createNewApplication(final Application application){
         final Date date = new Date();
         System.out.println("Inside service, creating new application on date : " + date);
-
         User user = authService.getLoggedInUser();
         if (user != null) {
             application.setUserId(user.getId());
@@ -44,7 +46,6 @@ public class ApplicationService {
             // Handle the case where the user is not found
             throw new ApplicationContextException("User not found");
         }
-
         application.currentStatusDate = date;
         application.currentStatus = "interested";
         if(application.referralRequested) {

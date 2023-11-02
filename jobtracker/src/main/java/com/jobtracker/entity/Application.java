@@ -19,10 +19,6 @@ public class Application {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private User user;
 
     @Column(name = "user_id")
     public int userId;
@@ -41,6 +37,9 @@ public class Application {
     @NotBlank(message = "jobLink cannot be blank")
     @NotNull(message = "jobLink cannot be null")
     public final String jobLink;
+
+    @Column(name = "logo")
+    public final String logo;
 
     @Column(name = "referral_requested")
     public  Boolean referralRequested;

@@ -16,24 +16,26 @@ const Topbar = () => {
   const handleLogout = async () => {
     dispatch(logOut())
   }
-  if (!isLoggedIn) return
   return (
     <div className="bg-green-600 p-4 ">
-    <div className="flex flex-wrap md:flex-nowrap justify-between items-center mx-8">
-      <div className="flex items-center">
-        <Link href="/" className="text-white text-xl font-bold">JobPulse
-        </Link>
-      </div>
-      <div className="flex justify-end mt-4 md:mt-0 space-x-4">
-        <Link href="/dashboard"className="bg-teal-900 text-white px-4 py-2 rounded">Dashboard
-        </Link>
-        <Link href="/summary"className="bg-teal-900 text-white px-4 py-2 rounded">Summary
-        </Link>
-        <Link href="/auth" onClick={handleLogout}  className="bg-teal-900 text-white px-4 py-2 rounded">Logout
-        </Link>
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mx-8">
+        <div className="flex items-center">
+          <Link href="/" className="text-white text-3xl font-bold ">JobPulse
+          </Link>
+        </div>
+        {isLoggedIn ?
+          <div className="flex justify-end mt-4 md:mt-0 space-x-4">
+            <Link href="/dashboard" className="bg-teal-900 text-white px-4 py-2 rounded">Dashboard
+            </Link>
+            <Link href="/summary" className="bg-teal-900 text-white px-4 py-2 rounded">Summary
+            </Link>
+            <Link href="/auth" onClick={handleLogout} className="bg-teal-900 text-white px-4 py-2 rounded">Logout
+            </Link>
+          </div> : <Link href="/auth" onClick={handleLogout} className="bg-teal-900 text-white px-4 py-2 rounded">Login
+          </Link>
+        }
       </div>
     </div>
-  </div>
   )
 }
 

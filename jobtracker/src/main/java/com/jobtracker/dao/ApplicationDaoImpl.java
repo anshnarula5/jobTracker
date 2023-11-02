@@ -198,5 +198,4 @@ public class ApplicationDaoImpl implements ApplicationDao{
         }
         return responseList;
     }
-
 }

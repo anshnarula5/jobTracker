@@ -126,3 +126,12 @@ export const getCompanyDistribution = async(token : string) => {
   })
   return data
 }
+
+export const getCompanyLogo = async(name : string) => {
+  const {data} = await axios.get("https://api.api-ninjas.com/v1/logo?name=" + name, {
+    headers: {
+      'X-Api-Key': 'V7tXaVJKdnGNzFuhGesPIA==pXTTIpqX2MI7AR5u'
+    },
+  })
+  return data[0].image
+}
