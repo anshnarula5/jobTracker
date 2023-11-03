@@ -14,7 +14,7 @@ const Register = ({ userData, setUserData, setIsLogin } : any) => {
     e.preventDefault()
     try {
       console.log(userData)
-      const { data } = await axios.post("http://localhost:8080/api/auth/register", userData);
+      const { data } = await axios.post("http://localhost:5000/api/auth/register", userData);
       const { data: resData } = data;
       const { email: mail, firstName, id, lastName, token: authToken } = resData;
       const name = firstName + " " + lastName

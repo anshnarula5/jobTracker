@@ -22,7 +22,7 @@ const Login = ({ userData, setUserData, setIsLogin }: any) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post("http://localhost:8080/api/auth/authenticate", { email, password });
+      const { data } = await axios.post("http://localhost:5000/api/auth/authenticate", { email, password });
       const { data: resData } = data;
       const { email: mail, firstName, id, lastName, token: authToken } = resData;
       const name = firstName + " " + lastName

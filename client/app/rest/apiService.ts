@@ -1,10 +1,10 @@
 import axios from "axios"
 import { Application } from "../utils/Types"
-const URI = "http://localhost:8080/api/application"
-
+const URI = "http://jobtracker.ap-south-1.elasticbeanstalk.com"
+// http://localhost:5000
 
 export const getAllApplications = async (query: string, token: string) => {
-  const response = await fetch(URI + "?query=" + query, {
+  const response = await fetch(URI + "/api/application?query=" + query, {
     method: "GET",
     mode: "cors",
     headers: {
@@ -18,24 +18,24 @@ export const getAllApplications = async (query: string, token: string) => {
 }
 
 export const addNewApplication = async (formData: Application, token: string) => {
-  const response = await fetch(URI, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    credentials: "same-origin", // include, *same-origin, omit
+  const response = await fetch(URI + "/api/application", {
+    method: "POST", 
+    mode: "cors",
+    credentials: "same-origin", 
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
       'Access-Control-Allow-Origin': '*'
     },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(formData), // body data type must match "Content-Type" header
+    redirect: "follow", 
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(formData),
   })
   const data = await response.json()
   return data
 }
 export const updateApplicationStatus = async (id: number, newStatus: string, token: string) => {
-  const response = await fetch(URI + `/update/${id}/${newStatus}`, {
+  const response = await fetch(URI + `/api/application/update/${id}/${newStatus}`, {
     method: "PUT",
     mode: "cors",
     cache: "no-cache",
@@ -51,7 +51,7 @@ export const updateApplicationStatus = async (id: number, newStatus: string, tok
 }
 export const deleteApplication = async (id: number, token: string) => {
   console.log(id)
-  const response = await fetch(URI + `/delete/${id}`, {
+  const response = await fetch(URI + `/api/application/delete/${id}`, {
     method: "DELETE",
     mode: "cors",
     cache: "no-cache",
@@ -68,7 +68,7 @@ export const deleteApplication = async (id: number, token: string) => {
 
 
 export const register = async (formData: any) => {
-  const response = await fetch("http://localhost:8080/api/auth/register", {
+  const response = await fetch("http://localhost:5000/api/auth/register", {
     method: "POST",
     body: JSON.stringify(formData),
     mode: "cors",
@@ -86,7 +86,7 @@ export const register = async (formData: any) => {
 }
 
 export const getStatusDistribution = async(token : string) => {
-  const {data} = await axios.get(URI + "/summary/status-distribution", {
+  const {data} = await axios.get(URI + "/api/application/summary/status-distribution", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export const getStatusDistribution = async(token : string) => {
 }
 
 export const getReferralAnalysis = async(token : string) => {
-  const {data} = await axios.get(URI + "/summary/referral-analysis", {
+  const {data} = await axios.get(URI + "/api/application/summary/referral-analysis", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ export const getReferralAnalysis = async(token : string) => {
   return data
 }
 export const getApplicationsCount = async(token : string) => {
-  const {data} = await axios.get(URI + "/summary/application-count", {
+  const {data} = await axios.get(URI + "/api/application/summary/application-count", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -117,7 +117,7 @@ export const getApplicationsCount = async(token : string) => {
   return data
 }
 export const getCompanyDistribution = async(token : string) => {
-  const {data} = await axios.get(URI + "/summary/company-distribution", {
+  const {data} = await axios.get(URI + "/api/application/summary/company-distribution", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
