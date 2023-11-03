@@ -34,7 +34,7 @@ const Summary = () => {
   }, [])
 
   return (
-    <div className='min-h-screen min-w-full text-white text-[50px] bg-slate-800 '>
+    <div className='min-h-screen min-w-full text-white text-[50px] bg-slate-800 flex flex-row flex-wrap justify-center items-center'>
       {isLoading ? <Loading /> : applicationsCount === 0 ? "Add applications to see the charts" :
       <div className='flex flex-row flex-wrap justify-center items-center '>
         <div className=''>
