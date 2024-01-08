@@ -7,13 +7,9 @@ The included summary feature offers graphical insights into application performa
 
 ## Demo
 
-Browse through products, add comment and rating, add products to cart.
-
-![easybuy](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnhyM2dyNmh3NmFxeXJycW5ob2FnOHd3OXZkdTA0ejd6Ymt5aGI4ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JIzrEBP5zvyYhOQE6P/giphy.gif)
-
 Workflow
 
-![easybuy](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGhkcDNkY2xkZnYzYmk5anI2cGc4c3lodGs0eno2eWkzYnlrZDA2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x1cxzTd5zAWr7TwbmK/giphy.gif)
+![jobtracker](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGhkcDNkY2xkZnYzYmk5anI2cGc4c3lodGs0eno2eWkzYnlrZDA2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x1cxzTd5zAWr7TwbmK/giphy.gif)
 
 ## Installation
 
