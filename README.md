@@ -7,6 +7,11 @@ The included summary feature offers graphical insights into application performa
 
 ## Demo
 
+<img width="1267" alt="image" src="https://github.com/anshnarula5/jobTracker/assets/66325953/0763e463-8312-4d2d-ba1a-d8bef7dad7a6">
+
+
+<img width="1247" alt="image" src="https://github.com/anshnarula5/jobTracker/assets/66325953/0b83a8a5-601a-4099-a173-ee568c0feeed">
+
 Workflow
 
 ![jobtracker](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGhkcDNkY2xkZnYzYmk5anI2cGc4c3lodGs0eno2eWkzYnlrZDA2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x1cxzTd5zAWr7TwbmK/giphy.gif)
