@@ -27,37 +27,14 @@ Install react client
   npm install 
 ```
 
-Install Nodejs server
+Backend
 
 ```bash
-  npm install 
+  cd jobtracker
+  mvn clean install
 ```
     
-## Run Locally
 
-Clone the project
-
-```bash
-  git clone https://github.com/anshnarula5/ecommerce.git
-```
-
-Go to the project directory
-
-```bash
-  cd instamiligram
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the both client and server by one command
-
-```bash
-  npm run dev
-```
 
 
 ## License
@@ -67,7 +44,7 @@ Start the both client and server by one command
 
 ## Tech Stack
 
-**Client:** React, Redux, Bootstrap, CSS
+**Client:** Nextjs, Tailwind, CSS
 
-**Server:** Node, Express, MongoDB
+**Server:** Spring Boot, MySQL, JPA
 
