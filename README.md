@@ -7,8 +7,10 @@ The included summary feature offers graphical insights into application performa
 
 ## Demo
 
-<img width="1267" alt="image" src="https://github.com/anshnarula5/jobTracker/assets/66325953/0763e463-8312-4d2d-ba1a-d8bef7dad7a6">
+<img width="1272" alt="jt2" src="https://github.com/anshnarula5/jobTracker/assets/66325953/e1bf47b5-0d66-456b-a9cd-6faa052c2a8a">
 
+
+<img width="1267" alt="image" src="https://github.com/anshnarula5/jobTracker/assets/66325953/0763e463-8312-4d2d-ba1a-d8bef7dad7a6">
 
 <img width="1247" alt="image" src="https://github.com/anshnarula5/jobTracker/assets/66325953/0b83a8a5-601a-4099-a173-ee568c0feeed">
 
